@@ -9,18 +9,10 @@ class RecipeEdit extends Component {
       recipeId: window.location.hash.slice(15)
   }
 
-  async componentDidMount(){ //still not updating store on page refresh...
-    let propsLoaded = false;
-    const {recipes, getData} = this.props;
-    if(!recipes){
-      propsLoaded = false;
-      await getData();
-    } else {
-      propsLoaded = true;
-    }
-
-    if(propsLoaded){
-      const {recipeId} = this.state;
+  async componentDidUpdate(prevProps){ //to handle page refresh, but for some reason not working, although the structure is the same as in ChefEdit component.
+    const {recipes} = this.props;
+    const {recipeId} = this.state;
+    if(prevProps.recipes === this.props.recipes){
       const findRecipe = recipes.find(recipe => recipe.id === recipeId);
       await store.dispatch({
         type: SET_CURRENT,
@@ -29,21 +21,22 @@ class RecipeEdit extends Component {
     }
   }
 
+  async componentDidMount(){ 
+    const {recipes, getData} = this.props;
+    const {recipeId} = this.state;
+    const findRecipe = recipes.find(recipe => recipe.id === recipeId);
+    await store.dispatch({
+      type: SET_CURRENT,
+      current: findRecipe.name
+    })
+  }
+
   editRecipe(event){
     this.setState({ input: event.target.value })
   }
 
   selectedChange(event){
     this.setState({ selected: event.target.value });
-  }
-
-  notification(type, text){
-    if (type === 'delete'){
-      document.querySelector('.home .notification').innerText = `${text}`;
-    }
-    if (type === 'update'){
-      document.querySelector('.notification').innerText = `${text}`;
-    }   
   }
 
   async updateRecipe(event){
@@ -61,10 +54,9 @@ class RecipeEdit extends Component {
 
   render(){
     const {chefs, current, recipes} = this.props;
-    const {input, recipe, recipeId} = this.state;
+    const {input, recipeId} = this.state;
     const findRecipe = recipes.find(recipe => recipe.id === recipeId);
     const selected = chefs.find(chef => chef.id === findRecipe.chefId);
-    console.log(selected.name);
     const listChefs = chefs.map(chef => <option key={chef.id} value={`${chef.name}`}>{chef.name}</option>);
     return (
       <div className="form-input">
