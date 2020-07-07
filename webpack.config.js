@@ -3,11 +3,12 @@ module.exports = {
     rules: [
       {
         test:/\.js$/,
-        exclude: /node_modules/,
+        exclude: /node_modules/
         use: {
           loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-react']
+          options: { 
+            presets: ['@babel/preset-env', '@babel/react'],
+            plugins:['@babel/plugin-proposal-class-properties']
           }
         }
       }

@@ -1,4 +1,110 @@
-body {
-  font-family: verdana;
+html {
+  margin: 0 auto;
+  max-width: 1280px;
+  width: 100%;
 }
 
+body {
+  font-family: Verdana;
+}
+
+h1 {
+  text-align: center;
+}
+
+h3 {
+  margin: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+h4 {
+  margin: 0;
+}
+
+.chef, .recipe {
+  border-bottom: 1px solid black;
+  padding: 2% 0;
+}
+
+.list > ul {
+  padding: 0
+}
+
+.chef-recipes {
+  list-style-type: square;
+}
+
+input, button, select {
+  margin-right: 1%;
+}
+
+.edit {
+  margin-top: 2%;
+  font-size: 14px;
+}
+
+a {
+  border: 1px solid black;
+  color: black;
+  margin-right: 1%;
+  padding: 1%;
+  text-decoration: none;
+}
+
+a:hover {
+  color: white;
+  background-color: gray;
+}
+
+.selected {
+  background-color: black;
+  color: white;
+}
+
+input {
+  border: 0;
+  border-bottom: 1px solid gray;
+  padding: .4% 0;
+}
+
+button {
+  background-color: #909090; /* Green */
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
+  padding: 0.6%;
+  text-align: center;
+  text-decoration: none;
+}
+
+button:hover {
+  background-color: gray;
+}
+
+button.delete{
+  background-color: red; /* Green */
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
+  padding: 0.6%;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+h2{
+  margin: 2.2% 0;
+}
+
+select {
+  border: none;
+  border-bottom: 1px solid gray;
+  color: gray;
+  cursor: pointer;
+  padding: .4% 0;
+}
