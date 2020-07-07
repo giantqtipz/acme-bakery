@@ -6,7 +6,8 @@ import store, { SET_CURRENT } from '../store';
 class RecipeEdit extends Component {
   state = {
       input: '',
-      recipeId: window.location.hash.slice(15)
+      recipeId: window.location.hash.slice(15),
+      selected: ''
   }
 
   async componentDidUpdate(prevProps){ //to handle page refresh, but for some reason not working, although the structure is the same as in ChefEdit component.
@@ -22,7 +23,7 @@ class RecipeEdit extends Component {
   }
 
   async componentDidMount(){ 
-    const {recipes, getData} = this.props;
+    const {recipes} = this.props;
     const {recipeId} = this.state;
     const findRecipe = recipes.find(recipe => recipe.id === recipeId);
     await store.dispatch({
@@ -56,14 +57,17 @@ class RecipeEdit extends Component {
     const {chefs, current, recipes} = this.props;
     const {input, recipeId} = this.state;
     const findRecipe = recipes.find(recipe => recipe.id === recipeId);
-    const selected = chefs.find(chef => chef.id === findRecipe.chefId);
-    const listChefs = chefs.map(chef => <option key={chef.id} value={`${chef.name}`}>{chef.name}</option>);
+    // const findChef = chefs.find(chef => chef.id === findRecipe.chefId); meant to use this in the select tag as defaultValue={findChef.name}, but creates problems
+    const listChefs = chefs.map(chef => {
+      return <option key={chef.id} value={`${chef.name}`}>{chef.name}</option>
+  
+  });
     return (
       <div className="form-input">
         <h2>Edit Recipe</h2>
         <form>
           <input placeholder={current} value={input} onChange={this.editRecipe.bind(this)}/>
-          <select value={selected.name} onChange={this.selectedChange.bind(this)}>{listChefs}</select>
+          <select onChange={this.selectedChange.bind(this)}>{listChefs}</select>
           <button onClick={this.updateRecipe.bind(this)}>Update</button>
           <button className='delete' onClick={() => this.deleteRecipe(event, recipeId)}>Delete</button>      
         </form>
