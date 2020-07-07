@@ -9,14 +9,24 @@ class RecipeEdit extends Component {
       recipeId: window.location.hash.slice(15)
   }
 
-  componentDidMount(){
-    const {recipeId} = this.state;
-    const {recipes} = this.props;
-    const findRecipe = recipes.find(recipe => recipe.id === recipeId);
-    store.dispatch({
-      type: SET_CURRENT,
-      current: findRecipe.name
-    })
+  async componentDidMount(){ //still not updating store on page refresh...
+    let propsLoaded = false;
+    const {recipes, getData} = this.props;
+    if(!recipes){
+      propsLoaded = false;
+      await getData();
+    } else {
+      propsLoaded = true;
+    }
+
+    if(propsLoaded){
+      const {recipeId} = this.state;
+      const findRecipe = recipes.find(recipe => recipe.id === recipeId);
+      await store.dispatch({
+        type: SET_CURRENT,
+        current: findRecipe.name
+      })
+    }
   }
 
   editRecipe(event){

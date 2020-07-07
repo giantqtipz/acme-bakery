@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { HashRouter, Route, Switch } from 'react-router-dom';
-import { mapDispatchToProps } from './Thunks/thunks';
+import { mapStateToProps, mapDispatchToProps } from './Thunks/thunks';
 
 import "@babel/polyfill";
 
@@ -12,9 +12,9 @@ import Recipes from './Components/Recipes';
 import RecipeEdit from './Components/RecipeEdit';
 
 class App extends Component{
-  componentDidMount(){
+  async componentDidMount(){
     const {getData} = this.props;
-    getData();
+    await getData();
   }
   
   render(){
@@ -33,5 +33,5 @@ class App extends Component{
   }
 };
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 

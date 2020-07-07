@@ -9,15 +9,24 @@ class ChefEdit extends Component {
     chefId: window.location.hash.slice(13)
   }
 
-  componentDidMount(){
-    const {chefId} = this.state;
-    const {chefs} = this.props;
-    const findChef = chefs.find(chef => chef.id === chefId);
-    console.log(findChef);
-    store.dispatch({
-      type: SET_CURRENT,
-      current: findChef.name
-    })
+  async componentDidMount(){ //still not updating store on page refresh...
+    let propsLoaded = false;
+    const {chefs, getData} = this.props;
+    if(!chefs){
+      propsLoaded = false;
+      await getData();
+    } else {
+      propsLoaded = true;
+    }
+
+    if(propsLoaded){
+      const {chefId} = this.state;
+      const findChef = chefs.find(chef => chef.id === chefId);
+      await store.dispatch({
+        type: SET_CURRENT,
+        current: findChef.name
+      })
+    }
   }
 
   editChef(event){

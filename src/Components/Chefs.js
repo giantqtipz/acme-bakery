@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import ChefsForm from './ChefsForm';
 import {connect} from 'react-redux';
-import { mapStateToProps } from '../Thunks/thunks';
 
 class Chefs extends Component {
   render(){
@@ -32,4 +31,11 @@ class Chefs extends Component {
   }
 }
 
-export default connect(mapStateToProps)(Chefs);
+const mapStateToProps = (state) => {
+  return {
+    chefs: state.chefs,
+    recipes: state.recipes,
+  }
+}
+
+export default connect(mapStateToProps, null)(Chefs);

@@ -17,8 +17,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch)=> {
     return {
-      getData: () => {
-        Axios.all([Axios.get('http://localhost:3003/api/chefs'), Axios.get('http://localhost:3003/api/recipes')])
+      getData: async () => {
+        await Axios.all([Axios.get('http://localhost:3003/api/chefs'), Axios.get('http://localhost:3003/api/recipes')])
         .then(((response) => {
           const [{data: {chefs: chefs}}, {data: {recipes: recipes}}] = response;
           store.dispatch({
