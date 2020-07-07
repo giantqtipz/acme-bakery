@@ -48,7 +48,7 @@ const mapDispatchToProps = (dispatch)=> {
         event.preventDefault();
         const {input, chefId} = obj;
         const {chefs} = store.getState();
-        const findChef = chefs.find(chef => chef.id === chefId);
+        const findChef = chefs.find(chef => chef.id === chefId); // Just realized all of these could be placed into a helper function, so it's not repetitive.
         await Axios.put(`/api/chefs/${chefId}`, {name: input}).then((response) => {
           const updatedChef = response.data.updatedChef;
           const updatedChefsList = chefs.map(chef => chef.id === chefId ? updatedChef : chef)
@@ -62,11 +62,12 @@ const mapDispatchToProps = (dispatch)=> {
       async deleteChef(event, chefId){
         event.preventDefault();
         const {chefs, recipes} = store.getState();
-        const findChefByRecipe= chefs.find(chef => chef.id === chefId);
-        if(!findChefByRecipe){
+        const findChef = chefs.find(chef => chef.id === chefId); // Just realized all of these could be placed into a helper function, so it's not repetitive.
+        const findRecipes = recipes.filter(recipe => recipe.chefId === chefId); // Just realized all of these could be placed into a helper function, so it's not repetitive.
+        if(!findChef){
           notification(`Chef not found!`);
         } else {
-          const confirmDelete = confirm(`Chef ${findChefByRecipe.name} has recipes, are you sure you want to delete?`)
+          const confirmDelete = confirm(`Chef ${findChef.name} has ${findRecipes.length} recipes, are you sure you want to delete?`);
           if(!confirmDelete){
             return;
           } else {
@@ -90,7 +91,7 @@ const mapDispatchToProps = (dispatch)=> {
         event.preventDefault();
         const {chefs, recipes} = store.getState();
         const {input, selected} = obj;
-        const findChef = chefs.find(chef => chef.name === selected);
+        const findChef = chefs.find(chef => chef.name === selected); // Just realized all of these could be placed into a helper function, so it's not repetitive.
         const notification = document.querySelector('.notification');
         await Axios.post('/api/recipes', { name: input, chefId: findChef.id })
         .then(response => {
@@ -105,9 +106,9 @@ const mapDispatchToProps = (dispatch)=> {
         event.preventDefault();
         const {input, recipeId, selected} = obj;
         const {recipes, chefs} = store.getState();
-        const findRecipe = recipes.find(recipe => recipe.id === recipeId);
-        const currentChef = chefs.find(chef => chef.id === findRecipe.chefId);
-        const newChef = chefs.find(chef => chef.name === selected);
+        const findRecipe = recipes.find(recipe => recipe.id === recipeId); // Just realized all of these could be placed into a helper function, so it's not repetitive.
+        const currentChef = chefs.find(chef => chef.id === findRecipe.chefId); // Just realized all of these could be placed into a helper function, so it's not repetitive.
+        const newChef = chefs.find(chef => chef.name === selected); 
         await Axios.put(`/api/recipes/${recipeId}`, {name: input, chefId: newChef.id}).then((response) => {
           const updatedRecipe = response.data.updatedRecipe;
           const updatedRecipesList = recipes.map(recipe => recipe.id === recipeId ? updatedRecipe : recipe);
