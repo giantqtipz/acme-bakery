@@ -61,20 +61,30 @@ const mapDispatchToProps = (dispatch)=> {
       },
       async deleteChef(event, chefId){
         event.preventDefault();
-        const {chefs, recipes} = store.getState();;
-        await Axios.delete(`/api/chefs/${chefId}`).then(response => {
-          const updatedChefs = chefs.filter(chef => chef.id !== chefId);
-          const updatedRecipes = recipes.filter(recipe => recipe.chefId !== chefId);
-          store.dispatch({  // UPDATE CHEFS LIST
-            type: SET_CHEFS,
-            chefs: updatedChefs
-          });
-          store.dispatch({  // UPDATE RECIPES LIST
-            type: SET_RECIPES,
-            recipes: updatedRecipes
-          });
-          window.location.href ='/#/chefs'; // REDIRECT BACK TO CHEFS LIST
-        })
+        const {chefs, recipes} = store.getState();
+        const findChefByRecipe= chefs.find(chef => chef.id === chefId);
+        if(!findChefByRecipe){
+          notification(`Chef not found!`);
+        } else {
+          const confirmDelete = confirm(`Chef ${findChefByRecipe.name} has recipes, are you sure you want to delete?`)
+          if(!confirmDelete){
+            return;
+          } else {
+            await Axios.delete(`/api/chefs/${chefId}`).then(response => {
+              const updatedChefs = chefs.filter(chef => chef.id !== chefId);
+              const updatedRecipes = recipes.filter(recipe => recipe.chefId !== chefId);
+                store.dispatch({  // UPDATE CHEFS LIST
+                  type: SET_CHEFS,
+                  chefs: updatedChefs
+                });
+                store.dispatch({  // UPDATE RECIPES LIST
+                  type: SET_RECIPES,
+                  recipes: updatedRecipes
+                });
+                window.location.href ='/#/chefs'; // REDIRECT BACK TO CHEFS LIST
+            })
+            }
+          }
       },
       async addRecipe(event, obj){
         event.preventDefault();
