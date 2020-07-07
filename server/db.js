@@ -45,6 +45,12 @@ const sync = async (force = false)=> {
   }
 };
 
+// const seed = async() => {
+
+// }
+
+// not sure how to 'seed'. Apparently it's whats preventing this from being deployed in Heroku..
+
 
 module.exports = {
   sync,

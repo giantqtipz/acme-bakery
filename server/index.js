@@ -53,23 +53,42 @@ app.get('*', async (req,res) => {
 
 // POST REQUESTS
 
-app.post('/api/chefs', async (req,res) => {
+app.post('/api/chefs', async (req,res, next) => {
   const {name} = req.body;
+  // if(typeof name !== ' string'){
+  //   res.status(400).send({
+  //     message: `Name must be a string`
+  //   })
+  //   next();
+  // } else {
+
+  // Attempt at error handling
+
   const chef = await db.Chef.create({
     name: name
   })
   res.send({chef});
   console.log(`Welcome ${name}`);
+  // } 
 });
 
 app.post('/api/recipes', async (req,res) => {
   const {name, chefId} = req.body;
+  // if(typeof name !== ' string' || typeof chefId !== 'number'){
+  //   res.status(400).send({
+  //     message: `Name must be a string, and ID must be numerical`
+  //   })
+  // } else {
+
+  // Attempt at error handling
+  
   const recipe = await db.Recipe.create({
     name: name,
     chefId: chefId
   })
   res.send({recipe});
   console.log(`Created recipe ${name} made by ${name}`);
+  // }
 });
 
 // DELETE REQUESTS
@@ -90,6 +109,7 @@ app.delete('/api/chefs/:id', async (req,res) => {
   })    
 
   res.send({id})
+  // Not sure how to handle this properly. This deletes chef and their corresponding recipes, but returns an error (although successfully deletes).
 });
 
 app.delete('/api/recipes/:id', async (req,res) => {
@@ -116,8 +136,13 @@ app.delete('/api/recipes/:id', async (req,res) => {
 app.put('/api/chefs/:id', async (req, res) => {
   const {name} = req.body;
   const {id} = req.params;
-  console.log(req.body);
   const chef = await db.Chef.findByPk(id);
+
+  if(typeof name !== 'string'){
+    res.status(400).send({
+      message: `Name must be a string`
+    })
+  } 
 
   if(!chef){
     res.status(404).send({
@@ -134,8 +159,13 @@ app.put('/api/chefs/:id', async (req, res) => {
 app.put('/api/recipes/:id', async (req, res) => {
   const {name, chefId} = req.body;
   const {id} = req.params;
-
   const recipe = await db.Recipe.findByPk(id);
+
+  if(typeof name !== 'string'){
+    res.status(400).send({
+      message: `Name must be a string`
+    })
+  }
 
   if(!recipe){
     res.status(404).send({
