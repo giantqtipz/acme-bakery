@@ -1,13 +1,13 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunks from 'redux-thunk';
-
+//Types can go into own file
 const SET_CHEFS = 'SET_CHEFS';
 const SET_RECIPES = 'SET_RECIPES';
 const SET_CURRENT = 'SET_CURRENT';
 
 
-const chefsReducer = (state = [], action)=> {
-  switch(action.type){
+const chefsReducer = (state = [], action) => {
+  switch (action.type) {
     case SET_CHEFS:
       return action.chefs
     default:
@@ -15,20 +15,20 @@ const chefsReducer = (state = [], action)=> {
   }
 };
 
-const recipesReducer = (state = [], action)=> {
-  switch(action.type){
+const recipesReducer = (state = [], action) => {
+  switch (action.type) {
     case SET_RECIPES:
       return action.recipes
-    default:  
+    default:
       return state;
   }
 };
 
-const currentReducer = (state = '', action)=> {
-  switch(action.type){
+const currentReducer = (state = '', action) => {
+  switch (action.type) {
     case SET_CURRENT:
       return action.current
-    default:  
+    default:
       return state;
   }
 };

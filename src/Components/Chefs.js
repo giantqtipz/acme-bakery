@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ChefsForm from './ChefsForm';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 class Chefs extends Component {
-  render(){
-    const {chefs, recipes} = this.props;
+  render() {
+    const { chefs, recipes } = this.props;
     const findRecipes = (chefId) => recipes.filter(recipe => recipe.chefId === chefId);
-    const listChefs = chefs.map((chef) => {  
+    const listChefs = chefs.map((chef) => {   // Move this out of render
       return (
         <li className='chef' key={chef.id}>
           <h3>{chef.name}</h3>

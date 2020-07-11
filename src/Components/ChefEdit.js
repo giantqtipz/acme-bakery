@@ -6,24 +6,24 @@ import store, { SET_CURRENT } from '../store';
 class ChefEdit extends Component {
   state = {
     input: '',
-    chefId: window.location.hash.slice(13)
+    chefId: window.location.hash.slice(13) // This could also be passed in on props. 
   }
 
-  async componentDidUpdate(prevProps){ //to handle page refresh
-    const {chefs} = this.props;
-    const {chefId} = this.state;
-    if(prevProps.chefs === this.props.chefs){
+  async componentDidUpdate(prevProps) { //to handle page refresh
+    const { chefs } = this.props;
+    const { chefId } = this.state;
+    if (prevProps.chefs === this.props.chefs) {
       const findChef = chefs.find(chef => chef.id === chefId);
-      await store.dispatch({
+      await store.dispatch({ // not utilzing mapDispatchToProps?
         type: SET_CURRENT,
         current: findChef.name
       })
     }
   }
 
-  async componentDidMount(){
-    const {chefs} = this.props;
-    const {chefId} = this.state;
+  async componentDidMount() {
+    const { chefs } = this.props;
+    const { chefId } = this.state;
     const findChef = chefs.find(chef => chef.id === chefId);
     await store.dispatch({
       type: SET_CURRENT,
@@ -31,33 +31,33 @@ class ChefEdit extends Component {
     })
   }
 
-  editChef(event){
-    this.setState({input: event.target.value});
+  editChef(event) {
+    this.setState({ input: event.target.value });
   }
 
-  async updateChef(event){
-    const {updateChef} = this.props;
-    const {input, chefId} = this.state;
-    const obj = {input, chefId};
+  async updateChef(event) {
+    const { updateChef } = this.props;
+    const { input, chefId } = this.state;
+    const obj = { input, chefId };
     await updateChef(event, obj);
   }
 
-  async deleteChef(event){
-    const {deleteChef} = this.props;
-    const {chefId} = this.state;
+  async deleteChef(event) {
+    const { deleteChef } = this.props;
+    const { chefId } = this.state;
     await deleteChef(event, chefId);
   }
 
-  render(){
-    const {input} = this.state;
-    const {current} = this.props;
+  render() {
+    const { input } = this.state;
+    const { current } = this.props;
     return (
       <div className="form-input">
         <h2>Edit Chef</h2>
         <form>
-          <input placeholder={current} value={input} onChange={this.editChef.bind(this)}/>
+          <input placeholder={current} value={input} onChange={this.editChef.bind(this)} />
           <button onClick={this.updateChef.bind(this)}>Update</button>
-          <button className="delete" onClick={this.deleteChef.bind(this)}>Delete</button>      
+          <button className="delete" onClick={this.deleteChef.bind(this)}>Delete</button>
         </form>
         <h4 className="notification"></h4>
       </div>
@@ -65,4 +65,4 @@ class ChefEdit extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChefEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(ChefEdit); 

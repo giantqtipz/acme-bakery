@@ -2,7 +2,8 @@ const Sequelize = require('sequelize');
 const { UUID, UUIDV4, STRING } = Sequelize;
 const conn = new Sequelize(process.env.DATABASE_URL || 'postgres://localhost/acme_db');
 
-const Chef = conn.define('chef',{
+//Should move models definitions into own files. 
+const Chef = conn.define('chef', {
   id: {
     primaryKey: true,
     type: UUID,
@@ -17,7 +18,7 @@ const Chef = conn.define('chef',{
   }
 });
 
-const Recipe = conn.define('recipe',{
+const Recipe = conn.define('recipe', {
   id: {
     primaryKey: true,
     type: UUID,
@@ -35,11 +36,11 @@ const Recipe = conn.define('recipe',{
 Recipe.belongsTo(Chef);
 Chef.hasMany(Recipe);
 
-const sync = async (force = false)=> {
+const sync = async (force = false) => {
   try {
-    await conn.sync({force});
+    await conn.sync({ force });
     console.log('DB succesfully connected!');
-  } catch (e){
+  } catch (e) {
     console.log('Error connecting to the database');
     throw e;
   }
